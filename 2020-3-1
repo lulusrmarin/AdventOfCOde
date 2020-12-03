@@ -14,3 +14,5 @@ for(i = slope[0]; i < input.length; i += slope[0]){
         treeCount++;
     }
 }
+
+console.log(treeCount);
