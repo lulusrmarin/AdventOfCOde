@@ -1,0 +1,84 @@
+<script>
+
+function nextLetter(letter){
+    if(letter == 'z'){
+        return 'a';
+    }
+    return letter.substring(0, letter.length - 1) + String.fromCharCode(letter.charCodeAt(letter.length - 1) + 1)
+}
+
+var letters = 'abcdzzz';
+
+function getNextPassword(pw){
+    var chars = pw.split("");
+    var newStr = [];
+
+    var rollOver =false;
+    for(i = chars.length - 1; i >= 0; i--){
+        if(rollOver || i == chars.length - 1){
+            letter = nextLetter(chars[i]);
+            if(chars[i] == 'z'){
+                rollOver = true;
+            } else {
+                rollOver = false;
+            }
+        } else {
+            letter = chars[i];
+        }
+
+        newStr.unshift(letter);
+    }
+
+    return newStr.join("");
+}
+
+function validatePassword(pw){
+    var straightThree = false;
+    var forbiddenLetters = false;
+    var pairCount = 0;
+
+    var chars = pw.split("");
+
+    for(var i = 0; i < chars.length; i++){
+        if(pw.charCodeAt(i) == pw.charCodeAt(i+1) - 1 && pw.charCodeAt(i) == pw.charCodeAt(i+2) - 2){
+            var straightThree = true;
+        }
+
+        if(['i','l','o'].includes(chars[i])){
+            forbiddenLetters = true;
+        }
+    }
+
+    for(var i = 0; i < chars.length; i++){
+        if(chars[i] == chars[i+1]){
+            pairCount++;
+            i++;
+        }
+    }
+
+    if(straightThree && !forbiddenLetters && pairCount > 1){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var count = 0;
+var pw = "cqjxjnds";
+
+console.log(getNextPassword(pw));
+
+while(!validatePassword(pw)){
+    if(count == 10000000){
+        break;
+    }
+
+    pw = getNextPassword(pw);
+
+    count++;
+}
+
+console.log(pw);
+console.log(validatePassword(pw));
+
+</script>

@@ -1,0 +1,89 @@
+<script>
+var inputs = [
+"Alice would gain 54 happiness units by sitting next to Bob.",
+"Alice would lose 79 happiness units by sitting next to Carol.",
+"Alice would lose 2 happiness units by sitting next to David.",
+"Bob would gain 83 happiness units by sitting next to Alice.",
+"Bob would lose 7 happiness units by sitting next to Carol.",
+"Bob would lose 63 happiness units by sitting next to David.",
+"Carol would lose 62 happiness units by sitting next to Alice.",
+"Carol would gain 60 happiness units by sitting next to Bob.",
+"Carol would gain 55 happiness units by sitting next to David.",
+"David would gain 46 happiness units by sitting next to Alice.",
+"David would lose 7 happiness units by sitting next to Bob.",
+"David would gain 41 happiness units by sitting next to Carol."
+];
+
+var mappings = {};
+
+inputs.forEach(function(input){
+    var segments = input.split(" ");
+
+    var name = segments[0];
+    var direction = segments[2];
+    var value = parseInt(segments[3]);
+    var person = segments[10].slice(0,-1);
+
+    if(typeof(mappings[name]) == 'undefined'){
+        mappings[name] = {}
+    }
+    
+    mappings[name][person] = {
+        direction: direction,
+        value: value
+    }
+});
+
+console.log(mappings);
+
+var seating = {};
+var order = [];
+
+function assignSeatings(person, people){
+    Object.keys(mappings).forEach(function(mapNextPerson){
+        if(!people.includes(mapNextPerson) && people.length < Object.keys(mappings).length){
+            assignSeatings(mapNextPerson, people.concat([mapNextPerson]));
+        }
+    })
+
+    if(people.length == Object.keys(mappings).length){
+        order.push(people);
+    }
+}
+
+Object.keys(mappings).forEach(function(person){
+    assignSeatings(person, [ person ]);
+})
+
+var totalPts = 0;
+Object.keys(order).forEach(function(key){
+    var seats = order[key];
+    for(i = 0; i < seats.length; i++){
+        console.log("Person " + seats[i]);
+        if(i == 0){
+            var map = mappings[seats[i]][seats[seats.length-1]];
+            console.log("Sitting next to: " + seats[seats.length-1]);
+            console.log("Happiness points: " + (map.direction == 'gain' ? map.value : -map.value) )
+            totalPts += (map.direction == 'gain' ? map.value : -map.value);
+        }
+        if(i > 0){
+            var map = mappings[seats[i]][seats[i-1]];
+            console.log("Sitting next to " + seats[i-1]);
+            totalPts += (map.direction == 'gain' ? map.value : -map.value);
+        }
+        if(i < seats.length - 1){
+            var map = mappings[seats[i]][seats[i+1]];
+            console.log("Sitting next to " + seats[i+1]);
+            totalPts += (map.direction == 'gain' ? map.value : -map.value);
+        }
+        if(i == seats.length - 1){
+            var map = mappings[seats[i]][seats[0]];
+            console.log("Sitting next to " + seats[0]);
+            totalPts += (map.direction == 'gain' ? map.value : -map.value);
+        }
+    }
+})
+
+console.log(totalPts);
+
+</script>

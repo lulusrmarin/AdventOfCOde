@@ -104,7 +104,7 @@ var routes = routes.filter(function(route){
 // console.log(routes);
 
 var routes = routes.sort(function(a, b){
-    return a.distance - b.distance;
+    return b.distance - a.distance;
 });
 
 console.log(routes);

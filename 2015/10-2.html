@@ -1,0 +1,30 @@
+<script>
+var input = '1321131112';
+
+
+for(loop = 0; loop < 50; loop++){
+    var chars = input.split("");
+    var newString = "";
+    
+    for(i = 0; i < chars.length; i++){
+        var number = chars[i];
+        var numberCount = 1;
+
+        for(j = i + 1; chars[j] == chars[i]; j++){
+            numberCount++;
+        }
+        if(chars[j] != chars[i]){
+            newString += String(numberCount) + String(number);
+            i = j-1;
+        }
+    }
+
+    console.log(newString);
+    input = newString;
+}
+
+console.log(newString.split("").length);
+
+
+
+</script>
