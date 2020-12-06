@@ -1,0 +1,72 @@
+<script>
+var ingredients = [
+"Sprinkles: capacity 5, durability -1, flavor 0, texture 0, calories 5",
+"PeanutButter: capacity -1, durability 3, flavor 0, texture 0, calories 1",
+"Frosting: capacity 0, durability -1, flavor 4, texture 0, calories 6",
+"Sugar: capacity -1, durability 0, flavor 0, texture 2, calories 8",
+];
+
+var ingredients = [
+"Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8",
+"Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
+];
+
+var mapIngredients = {}
+
+ingredients.forEach(function(ingredient){
+    var words = ingredient.split(" ");
+    var type = words[0].slice(0,-1);
+    var properties = {
+        capacity: parseInt(words[2]),
+        durability: parseInt(words[4]),
+        flavor: parseInt(words[6]),
+        texture: parseInt(words[8]),
+        calories: parseInt(words[10])
+    }
+
+    mapIngredients[type] = properties;
+})
+
+console.log(mapIngredients);
+
+const totalTsps = 100;
+var fullBowls = [];
+function getCombinations(ingredient, bowl = {}){
+    console.log(Object.keys(bowl).length);
+    console.log(Object.keys(mapIngredients).length);
+    if(Object.keys(bowl).length == Object.keys(mapIngredients).length){
+        fullBowls.push(bowl);
+    } else {
+        for(var i = 1; i <= totalTsps - Object.keys(mapIngredients).length + 1; i++){
+            console.log(i);
+
+            var newBowl = bowl;
+            // if(Object.keys(bowl).length == Object.keys(mapIngredients).length - 1){
+            //     var sum = 0;
+            //     Object.keys(bowl).forEach(function(ingredient){
+            //         sum += bowl[ingredient];
+            //     })
+            //     console.log(sum);
+            //     newBowl[ingredient] = totalTsps - sum;
+            // } else {
+            //     console.log('adding ' + i + " tsps of " + ingredient);
+            //     newBowl[ingredient] = i;
+            // }
+
+            console.log('adding ' + i + " tsps of " + ingredient);
+                newBowl[ingredient] = i;
+            
+            console.log({newBowl})
+            Object.keys(mapIngredients).forEach(function(ingredient){
+                if(!Object.keys(newBowl).includes(ingredient)){
+                    console.log('combining ' + ingredient);
+                    getCombinations(ingredient, newBowl);
+                }
+            })
+        }
+    }
+}
+
+getCombinations(Object.keys(mapIngredients)[0]);
+console.log(fullBowls);
+</script>

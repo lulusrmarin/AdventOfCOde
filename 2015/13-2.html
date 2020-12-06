@@ -70,7 +70,25 @@ var inputs = [
 "Mallory would gain 37 happiness units by sitting next to David.",
 "Mallory would gain 40 happiness units by sitting next to Eric.",
 "Mallory would gain 18 happiness units by sitting next to Frank.",
-"Mallory would gain 7 happiness units by sitting next to George."
+"Mallory would gain 7 happiness units by sitting next to George.",
+"Robert would gain 0 happiness units by sitting next to George.",
+"Robert would gain 0 happiness units by sitting next to Alice.",
+"Robert would gain 0 happiness units by sitting next to Bob.",
+"Robert would gain 0 happiness units by sitting next to Carol.",
+"Robert would gain 0 happiness units by sitting next to David.",
+"Robert would gain 0 happiness units by sitting next to Eric.",
+"Robert would gain 0 happiness units by sitting next to Frank.",
+"Robert would gain 0 happiness units by sitting next to George.",
+"Robert would gain 0 happiness units by sitting next to Mallory.",
+"George would gain 0 happiness units by sitting next to Robert.",
+"Alice would gain 0 happiness units by sitting next to Robert.",
+"Bob would gain 0 happiness units by sitting next to Robert.",
+"Carol would gain 0 happiness units by sitting next to Robert.",
+"David would gain 0 happiness units by sitting next to Robert.",
+"Eric would gain 0 happiness units by sitting next to Robert.",
+"Frank would gain 0 happiness units by sitting next to Robert.",
+"George would gain 0 happiness units by sitting next to Robert.",
+"Mallory would gain 0 happiness units by sitting next to Robert.",
 ]
 
 var mappings = {};
@@ -119,7 +137,6 @@ Object.keys(order).forEach(function(key){
     var totalPts = 0;
     var seats = order[key];
     for(i = 0; i < seats.length; i++){
-        console.log("Person " + seats[i]);
         if(i == 0){
             var map = mappings[seats[i]][seats[seats.length-1]];
             totalPts += (map.direction == 'gain' ? map.value : -map.value);
