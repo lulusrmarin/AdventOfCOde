@@ -6,6 +6,10 @@ var ingredients = [
 "Sugar: capacity -1, durability 0, flavor 0, texture 2, calories 8",
 ];
 
+// var ingredients = [
+// "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8",
+// "Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
+// ]
 
 var mapIngredients = {}
 
@@ -52,6 +56,7 @@ combos.forEach(function(combo){
         durability: 0,
         flavor: 0,
         texture: 0,
+        calories: 0
     }
     combo.forEach(function(amt, key){
         mapping = mapIngredients[Object.keys(mapIngredients)[key]];
@@ -59,6 +64,7 @@ combos.forEach(function(combo){
         score.durability += mapping.durability * amt;
         score.flavor += mapping.flavor * amt;
         score.texture += mapping.texture * amt;
+        score.calories += mapping.calories * amt;
     })
 
     var finalScore = {
@@ -67,7 +73,11 @@ combos.forEach(function(combo){
         score: score,
         finalScore: Math.max(0,score.capacity) * Math.max(0,score.durability) * Math.max(0,score.flavor) * Math.max(0,score.texture)
     };
-    cookies.push(finalScore);
+
+    if(score.calories == 500){
+        cookies.push(finalScore);
+    }
+
 })
 
 cookies = cookies.sort(function(a,b){

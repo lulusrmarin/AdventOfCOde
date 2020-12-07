@@ -1,0 +1,66 @@
+<script>
+var totalL = 150;
+var containers = [20, 15, 10, 5, 5];
+
+var containers = [
+43,
+3,
+4,
+10,
+21,
+44,
+4,
+6,
+47,
+41,
+34,
+17,
+17,
+44,
+36,
+31,
+46,
+9,
+27,
+38,
+]
+
+var validCombos = [];
+function fill(currentSet){
+    //console.log(currentSet);
+    var sum = 0;
+    for(var i = 0; i < currentSet.length; i++){
+        sum += containers[currentSet[i]];
+    }
+    
+    if(sum > totalL){
+        return;
+    }
+
+    if(sum == totalL){
+        currentSet.sort(function(a, b){
+            return a - b;
+        })
+        if(!validCombos.includes(currentSet.join(","))){
+            validCombos.push(currentSet.join(","));
+        }
+        return;
+    }
+
+    if(currentSet.length < containers.length){
+        for(var i = 0; i < containers.length; i++){
+           // console.log({a: sum + containers[i], b: totalL - containers[i]});
+            if(!currentSet.includes(i) && sum + containers[i] <= totalL){
+                fill(currentSet.concat([i]));
+            }
+        }
+    }
+}
+
+containers.forEach(function(container, idx){
+    fill([idx])
+})
+
+console.log(validCombos.length);
+
+</script>
