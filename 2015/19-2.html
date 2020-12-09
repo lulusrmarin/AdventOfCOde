@@ -1,0 +1,122 @@
+<script>
+console.log('19');
+
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+}
+
+var replacements = [
+    "e => H",
+    "e => O",
+    "H => HO",
+    "H => OH",
+    "O => HH",
+];
+
+var replacements = [
+    "Al => ThF",
+    "Al => ThRnFAr",
+    "B => BCa",
+    "B => TiB",
+    "B => TiRnFAr",
+    "Ca => CaCa",
+    "Ca => PB",
+    "Ca => PRnFAr",
+    "Ca => SiRnFYFAr",
+    "Ca => SiRnMgAr",
+    "Ca => SiTh",
+    "F => CaF",
+    "F => PMg",
+    "F => SiAl",
+    "H => CRnAlAr",
+    "H => CRnFYFYFAr",
+    "H => CRnFYMgAr",
+    "H => CRnMgYFAr",
+    "H => HCa",
+    "H => NRnFYFAr",
+    "H => NRnMgAr",
+    "H => NTh",
+    "H => OB",
+    "H => ORnFAr",
+    "Mg => BF",
+    "Mg => TiMg",
+    "N => CRnFAr",
+    "N => HSi",
+    "O => CRnFYFAr",
+    "O => CRnMgAr",
+    "O => HP",
+    "O => NRnFAr",
+    "O => OTi",
+    "P => CaP",
+    "P => PTi",
+    "P => SiRnFAr",
+    "Si => CaSi",
+    "Th => ThCa",
+    "Ti => BP",
+    "Ti => TiTi",
+    "e => HF",
+    "e => NAl",
+    "e => OMg"
+]
+
+//var molecule = 'HOHOHO';
+
+var molecule = 'CRnCaCaCaSiRnBPTiMgArSiRnSiRnMgArSiRnCaFArTiTiBSiThFYCaFArCaCaSiThCaPBSiThSiThCaCaPTiRnPBSiThRnFArArCaCaSiThCaSiThSiRnMgArCaPTiBPRnFArSiThCaSiRnFArBCaSiRnCaPRnFArPMgYCaFArCaPTiTiTiBPBSiThCaPTiBPBSiRnFArBPBSiRnCaFArBPRnSiRnFArRnSiRnBFArCaFArCaCaCaSiThSiThCaCaPBPTiTiRnFArCaPTiBSiAlArPBCaCaCaCaCaSiRnMgArCaSiThFArThCaSiThCaSiRnCaFYCaSiRnFYFArFArCaSiRnFYFArCaSiRnBPMgArSiThPRnFArCaSiRnFArTiRnSiRnFYFArCaSiRnBFArCaSiRnTiMgArSiThCaSiThCaFArPRnFArSiRnFArTiTiTiTiBCaCaSiRnCaCaFYFArSiThCaPTiBPTiBCaSiThSiRnMgArCaF';
+
+var mappings = {};
+
+replacements.forEach(function(replacement){
+    var segments = replacement.split(" => ");
+    if(typeof(mappings[segments[1]]) == 'undefined'){
+        mappings[segments[1]] = [];
+    }
+    mappings[segments[1]].push(segments[0]);
+})
+
+console.log(mappings);
+
+var reduced = [];
+function reduce(mol, steps = 0){
+    //console.log("Depth is: " + steps);
+    //console.log("Current molecule is: " + String(mol));
+    if(mol == 'e'){
+        console.log('FOUND E IN ' + steps);
+        reduced.push(steps);
+    }
+
+    if(steps > 1000){
+        return;
+    }
+
+    Object.keys(mappings).forEach(function(el){
+        newEl = mappings[el][0]
+        //console.log(newEl);
+
+        var positions =[];
+        for(var nextPos = 0; nextPos > -1; nextPos++){
+            nextPos = mol.indexOf(el, nextPos);
+
+            if(nextPos > -1){
+                positions.push(nextPos);
+            } else {
+                break;
+            }
+        }
+
+        //console.log(el, positions.length);
+
+        positions.forEach(function(position){
+            var newMol = mol.slice(0, position) + newEl + mol.slice(position + el.length, mol.length);
+            //console.log("New molecule is: " + newMol + " with a difference of " + (mol.length - newMol.length));
+            if(newMol.indexOf('e') == -1 || newMol.indexOf('e') > - 1 && newMol.length == 1){
+                reduce(newMol, steps + 1);
+            }
+        })
+    });
+}
+
+reduce(molecule);
+console.log(reduced);
+console.log(reduced.sort(function(a,b){ return a - b})[0]);
+
+</script>

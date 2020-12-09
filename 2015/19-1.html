@@ -1,0 +1,103 @@
+<script>
+console.log('19');
+
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+}
+
+var replacements = [
+    "H => HO",
+    "H => OH",
+    "O => HH"
+];
+
+var replacements = [
+    "Al => ThF",
+    "Al => ThRnFAr",
+    "B => BCa",
+    "B => TiB",
+    "B => TiRnFAr",
+    "Ca => CaCa",
+    "Ca => PB",
+    "Ca => PRnFAr",
+    "Ca => SiRnFYFAr",
+    "Ca => SiRnMgAr",
+    "Ca => SiTh",
+    "F => CaF",
+    "F => PMg",
+    "F => SiAl",
+    "H => CRnAlAr",
+    "H => CRnFYFYFAr",
+    "H => CRnFYMgAr",
+    "H => CRnMgYFAr",
+    "H => HCa",
+    "H => NRnFYFAr",
+    "H => NRnMgAr",
+    "H => NTh",
+    "H => OB",
+    "H => ORnFAr",
+    "Mg => BF",
+    "Mg => TiMg",
+    "N => CRnFAr",
+    "N => HSi",
+    "O => CRnFYFAr",
+    "O => CRnMgAr",
+    "O => HP",
+    "O => NRnFAr",
+    "O => OTi",
+    "P => CaP",
+    "P => PTi",
+    "P => SiRnFAr",
+    "Si => CaSi",
+    "Th => ThCa",
+    "Ti => BP",
+    "Ti => TiTi",
+    "e => HF",
+    "e => NAl",
+    "e => OMg"
+]
+
+var molecule = 'HOHOHO';
+
+var molecule = 'CRnCaCaCaSiRnBPTiMgArSiRnSiRnMgArSiRnCaFArTiTiBSiThFYCaFArCaCaSiThCaPBSiThSiThCaCaPTiRnPBSiThRnFArArCaCaSiThCaSiThSiRnMgArCaPTiBPRnFArSiThCaSiRnFArBCaSiRnCaPRnFArPMgYCaFArCaPTiTiTiBPBSiThCaPTiBPBSiRnFArBPBSiRnCaFArBPRnSiRnFArRnSiRnBFArCaFArCaCaCaSiThSiThCaCaPBPTiTiRnFArCaPTiBSiAlArPBCaCaCaCaCaSiRnMgArCaSiThFArThCaSiThCaSiRnCaFYCaSiRnFYFArFArCaSiRnFYFArCaSiRnBPMgArSiThPRnFArCaSiRnFArTiRnSiRnFYFArCaSiRnBFArCaSiRnTiMgArSiThCaSiThCaFArPRnFArSiRnFArTiTiTiTiBCaCaSiRnCaCaFYFArSiThCaPTiBPTiBCaSiThSiRnMgArCaF';
+
+var mappings = {};
+
+replacements.forEach(function(replacement){
+    var segments = replacement.split(" => ");
+    if(typeof(mappings[segments[0]]) == 'undefined'){
+        mappings[segments[0]] = [];
+    }
+    mappings[segments[0]].push(segments[1]);
+})
+
+console.log(mappings);
+
+var mols = [];
+function replace(str, el, pos, replacement) {
+    var nextPos = str.indexOf(el, pos);
+    //console.log(nextPos);
+
+    if(nextPos !== -1){
+        //console.log(str.slice(0, nextPos));
+        //console.log(str.slice(nextPos + el.length, str.length));
+        var newStr = str.slice(0, nextPos) + replacement + str.slice(nextPos + el.length, str.length);
+        
+        if(!mols.includes(newStr)){
+            mols.push(newStr)
+        }
+
+        replace(str, el, nextPos + 1, replacement)
+    }
+}
+
+Object.keys(mappings).forEach(function(el){
+    //console.log(el);
+    mappings[el].forEach(function(replacement){
+        replace(molecule, el, 0, replacement);
+    })
+});
+
+console.log(mols);
+
+</script>
