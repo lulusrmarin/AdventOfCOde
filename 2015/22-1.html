@@ -1,0 +1,85 @@
+<script>
+console.log('22');
+
+spells = {
+    MagicMissile: {
+        cost: 53,
+        damage: 4,
+        types: ['instant', 'offensive']
+    },
+    Drain: {
+        cost: 72,
+        damage: 2,
+        types: ['instant', 'offensive', 'restorative', 'health']
+    },
+    Shield: {
+        cost: 113,
+        lasts: 6,
+        types: ['effect', 'defense'],
+    },
+    Poison: {
+        cost: 173,
+        damage: 3,
+        lasts: 6,
+        types: ['effect', 'offensive'],
+    },
+    Recharge: {
+        cost: 229,
+        types: ['effect', 'restorative', 'mana']
+    }
+}
+
+var bossStats = {
+    hp: 59,
+    damage: 9
+}
+
+var playerStats = {
+    hp: 100,
+    mp: 500
+}
+
+function battle(bossStats, playerStats){
+    bossHp = bossStats.hp;
+    playerHp = playerStats.hp;
+
+    var timer = {};
+
+    while(bossHp > 0){
+        for(i = 0; i < Object.keys(spells).length; i++){
+            spell = Object.keys(spells)[i];
+            var damage = 0;
+
+            if(spells[spell].types.includes('instant')){
+                console.log("Instant Spell");
+                var isInstant = true;
+            }
+
+            if(spells[spell].types.includes('offensive')){
+                bossHp -= spells[spell].damage;
+                console.log("Damage", spells[spell].damage);
+                console.log("Boss HP", bossHp);
+
+                if(bossHp <= 0){
+                    console.log("Boss Dead");
+                    console.log("Mana Spent", )
+                    break;;
+                }
+            }
+
+            if(spells[spell].types.includes('restorative')){
+                playerHp += spells[spell].damage;
+                console.log(playerHp);
+                console.log("Heal ", spells[spell].damage);
+                console.log("Player HP", playerHp);
+            }
+
+            //bossHp = 0;
+        }
+    }
+}
+
+battle(bossStats, playerStats);
+
+//effects apply at the start of the turn
+</script>

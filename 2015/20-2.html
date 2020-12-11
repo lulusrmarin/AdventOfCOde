@@ -1,0 +1,63 @@
+<script>
+console.log('20');
+
+var elfCount = {};
+function getFactors(number){
+    var factors = {};
+
+    for(var i = 1; i <= number / i; i++){
+        if(number % i == 0){
+            if(typeof(elfCount[i]) == 'undefined'){
+                elfCount[i] = 0;
+            }
+
+            if(typeof(elfCount[number / i]) == 'undefined'){
+                elfCount[number / i] = 0;
+            }
+
+            elfCount[i]++;
+            elfCount[number / i]++;
+
+            if(elfCount[i] <= 50){
+                factors[i] = true;
+            }
+
+            if(elfCount[number / i] <= 50){
+                factors[number / i] = true;
+            }
+        }
+    }
+
+    return Object.keys(factors);
+}
+
+//console.log(getFactors(51));
+
+var house = 1;
+while(true){
+    presents = (getFactors(house).reduce(function(prev, next){
+        return parseInt(prev) + parseInt(next);
+    }) * 11);
+
+    //console.log('presents', presents);
+
+    if(presents > 36000000){
+        console.log(presents);
+        console.log(house);
+        break;
+    }
+
+    house++;
+}
+
+console.log(elfCount);
+
+// console.log(house);
+// console.log(presents);
+
+//831601
+// console.log(getFactors(house).reduce(function(prev, next){
+//     return parseInt(prev) + parseInt(next);
+// }) * 10)
+
+</script>

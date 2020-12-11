@@ -1,0 +1,77 @@
+<script>
+console.log('10');
+
+var inputs = [
+16,
+10,
+15,
+5,
+1,
+11,
+7,
+19,
+6,
+12,
+4
+];
+
+var highest = inputs.sort(function(a, b){return b - a})[0] + 3
+console.log(highest);
+
+var sorted = inputs.sort(function(a,b){return a - b;});
+console.log(sorted);
+
+var ones = 0;
+var threes = 0;
+for(var i = 0; i < sorted.length; i++){
+    var current = sorted[i];
+    var next = sorted[i+1];
+    if(typeof(next) == 'undefined'){
+        next = highest;
+    }
+
+    if(next - current == 1 || (current == 1 && i == 0)){
+        ones++
+    }
+
+    if(next - current == 3 || (current ==  && i == 0)){
+        threes++
+    }
+
+    console.log("current", current)
+    console.log("next", next)
+    console.log('ones', ones);
+    console.log('threes', threes);
+}
+
+// var conversionPaths = [];
+// function convert(converters, depth = 1){
+//     console.log(converters);
+
+//     if(depth > 5){
+//         return;
+//     }
+
+//     if(converters.length == 0){
+//         var joltage = 0;
+//     } else {
+//         var joltage = converters[converters.length-1];
+//     }
+    
+//     console.log("joltage is", joltage);
+
+//     if(highest - joltage <= 3){
+//         conversionPaths.push(converters)
+//         return;
+//     }
+
+//     inputs.forEach(function(nextConverter){
+//         if(nextConverter - joltage <= 3){
+//             convert(converters.concat([nextConverter]), depth + 1);
+//         }
+//     })
+// }
+
+// convert([])
+// console.log(conversionPaths);
+</script>
