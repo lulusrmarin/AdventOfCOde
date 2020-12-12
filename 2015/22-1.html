@@ -14,6 +14,7 @@ spells = {
     },
     Shield: {
         cost: 113,
+        amt: 3,
         lasts: 6,
         types: ['effect', 'defense'],
     },
@@ -25,6 +26,8 @@ spells = {
     },
     Recharge: {
         cost: 229,
+        amt: 101,
+        lasts: 5,
         types: ['effect', 'restorative', 'mana']
     }
 }
@@ -39,23 +42,32 @@ var playerStats = {
     mp: 500
 }
 
+console.log(spells);
+
 function battle(bossStats, playerStats){
     bossHp = bossStats.hp;
     playerHp = playerStats.hp;
 
-    var timer = {};
+    var timer = {
+        Shield: 0,
+        Poison: 0,
+        Recharge: 0
+    };
 
     while(bossHp > 0){
         for(i = 0; i < Object.keys(spells).length; i++){
-            spell = Object.keys(spells)[i];
+            // Player phase
+            var spell = Object.keys(spells)[i];
+            console.log('spell', spell);
             var damage = 0;
+            var isInEffect = timer[spell] > 0;
 
             if(spells[spell].types.includes('instant')){
                 console.log("Instant Spell");
                 var isInstant = true;
             }
 
-            if(spells[spell].types.includes('offensive')){
+            if(spells[spell].types.includes('offensive') && (isInstant || isInEffect)){
                 bossHp -= spells[spell].damage;
                 console.log("Damage", spells[spell].damage);
                 console.log("Boss HP", bossHp);
@@ -63,18 +75,30 @@ function battle(bossStats, playerStats){
                 if(bossHp <= 0){
                     console.log("Boss Dead");
                     console.log("Mana Spent", )
-                    break;;
+                    break;
                 }
             }
 
-            if(spells[spell].types.includes('restorative')){
+            if(spells[spell].types.includes('restorative') && (isInstant || isInEffect)){
                 playerHp += spells[spell].damage;
-                console.log(playerHp);
+                console.log("Player HP", playerHp);
                 console.log("Heal ", spells[spell].damage);
                 console.log("Player HP", playerHp);
             }
 
-            //bossHp = 0;
+            
+            if(spells[spell].types.includes('effect') && timer[spell] == 0){
+                timer[spell] = spells[spell].lasts;
+            }
+
+            console.log("Spell Timer", timer);
+            
+            console.log('\n');
+            // Boss Phase
+
+            Object.keys(timer).forEach(function(spell){
+                timer[spell] = Math.max(timer[spell] - 1, 0);
+            })
         }
     }
 }
